@@ -1,52 +1,50 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./src/**/*.{html,js,jsx,ts,tsx}",
-    // Add other paths where you use Tailwind classes
-  ],
+export default {
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#367588",
+          50: "#ebf5f7",
+          100: "#d7ebef",
+          200: "#afd7df",
+          300: "#87c3cf",
+          400: "#5fafbf",
+          500: "#367588",
+          600: "#2c5e6d",
+          700: "#214652",
+          800: "#172f37",
+          900: "#0c171c",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "#918151",
+          50: "#f8f7f0",
+          100: "#f1efe2",
+          200: "#e3dfc4",
+          300: "#d5cfa7",
+          400: "#c7bf89",
+          500: "#918151",
+          600: "#746741",
+          700: "#574d31",
+          800: "#3a3420",
+          900: "#1d1a10",
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        navy: {
+          DEFAULT: "#002e63",
+          50: "#e6ecf5",
+          100: "#cdd9eb",
+          200: "#9bb3d7",
+          300: "#698dc3",
+          400: "#3767af",
+          500: "#002e63",
+          600: "#00254f",
+          700: "#001c3b",
+          800: "#001227",
+          900: "#000914",
         },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+        royal: {
+          DEFAULT: "#00008b",
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
       },
     },
   },
-  plugins: [],
-}
+};

@@ -1,69 +1,65 @@
 import { Globe, TrendingUp, Shield, MessageCircle } from "lucide-react";
-import { Card, CardContent } from "../components/ui/card";
 
 const features = [
   {
     icon: Globe,
     title: "Multilingual Support",
     description: "Full platform support in English, Amharic (አማርኛ), and Afaan Oromoo. No language barriers.",
-    color: "text-primary",
-    bg: "bg-primary/10",
+    color: "text-purple-800",
+    bg: "bg-purple-100",
   },
   {
     icon: TrendingUp,
     title: "Fair Pricing",
     description: "Direct trade eliminates middlemen. Farmers set their own prices and keep all profits.",
-    color: "text-secondary",
-    bg: "bg-secondary/10",
+    color: "text-indigo-600",
+    bg: "bg-indigo-100",
   },
   {
     icon: Shield,
     title: "Secure & Trusted",
     description: "Verified farmer profiles, buyer reviews, and secure communication channels.",
-    color: "text-primary",
-    bg: "bg-primary/10",
+    color: "text-purple-800",
+    bg: "bg-purple-100",
   },
   {
     icon: MessageCircle,
     title: "Direct Communication",
     description: "Chat directly with farmers in your preferred language. Negotiate and arrange pickup.",
-    color: "text-secondary",
-    bg: "bg-secondary/10",
+    color: "text-indigo-600",
+    bg: "bg-indigo-100",
   },
 ];
 
 const Features = () => {
   return (
-    <section id="how-it-works" className="py-20 bg-background">
+    <section id="how-it-works" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
             Why Choose FarmConnect?
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-gray-600">
             Built for Ethiopian farmers and buyers, with features that break down barriers and build communities.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
-            <Card 
+            <div 
               key={index}
-              className="border-2 hover:shadow-soft transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105 bg-white p-6 space-y-4"
             >
-              <CardContent className="p-6 space-y-4">
-                <div className={`h-12 w-12 rounded-xl ${feature.bg} flex items-center justify-center`}>
-                  <feature.icon className={`h-6 w-6 ${feature.color}`} />
-                </div>
-                <h3 className="text-xl font-semibold text-foreground">
-                  {feature.title}
-                </h3>
-                <p className="text-muted-foreground">
-                  {feature.description}
-                </p>
-              </CardContent>
-            </Card>
+              <div className={`h-12 w-12 rounded-xl ${feature.bg} flex items-center justify-center`}>
+                <feature.icon className={`h-6 w-6 ${feature.color}`} />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">
+                {feature.title}
+              </h3>
+              <p className="text-gray-600">
+                {feature.description}
+              </p>
+            </div>
           ))}
         </div>
       </div>
