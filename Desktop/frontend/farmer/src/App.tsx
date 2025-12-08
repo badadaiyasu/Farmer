@@ -14,8 +14,11 @@ import FarmerDashboard from "./pages/farmer/Dashboard";
 // Buyer Pages
 import BuyerDashboard from "./pages/buyer/Dashboard";
 
-// ✅ Auth Pages (ADD THIS)
+// Auth Pages
 import RegisterPage from "./pages/auth/RegisterPage";
+
+// ✅ Product Page - Corrected import path
+import ProductDetailPage from "./pages/buyer/ProductDetailPage"; // Fixed: lowercase 'b'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,8 +42,11 @@ const App = () => {
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
 
-            {/* ✅ Auth Routes */}
+            {/* Auth Routes */}
             <Route path="/auth/register" element={<RegisterPage />} />
+
+            {/* ✅ Product Details Route */}
+            <Route path="/product/:id" element={<ProductDetailPage />} />
 
             {/* Farmer Routes */}
             <Route
