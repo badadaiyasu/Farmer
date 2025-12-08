@@ -1,31 +1,66 @@
-// src/types/product.ts (updated)
+// src/types/product.ts
+
+/* ---------------------------------------------
+ * Language type
+ * ------------------------------------------- */
+export type ProductLanguage = 'en' | 'am' | 'om';
+
+/* ---------------------------------------------
+ * Farmer type
+ * ------------------------------------------- */
+export interface Farmer {
+  id: string | number;
+  name: string;
+  phone: string;
+  location: string;
+  avatar?: string;
+}
+
+/* ---------------------------------------------
+ * Main Product interface
+ * ------------------------------------------- */
 export interface Product {
-  id: number;
+  id: string | number;
   name: string;
   description: string;
   price: number;
-  quantity: string;
-  image: string | null;
+
+  // Measurement
+  unit: string;        // kg, piece, liter, etc.
+  quantity: number;
+
+  // Images
+  images: string[];    // supports multiple images
+
   category: string;
-  language: 'am' | 'or' | 'en';
-  created_at: string;
-  farmer: {
-    id: number;
-    name: string;
-    phone: string;
-    location: string;
-    avatar?: string;
-  };
+  language: ProductLanguage;
+
+  farmer: Farmer;
+
+  createdAt: string;
   views: number;
 }
 
-// Helper type for components that need non-null image
-export type ProductWithSafeImage = Omit<Product, 'image'> & {
-  image: string;
+/* ---------------------------------------------
+ * Helper type for components that require
+ * at least one guaranteed image
+ * ------------------------------------------- */
+export type ProductWithSafeImage = Product & {
+  images: [string, ...string[]]; // at least one image required
 };
 
-// Helper function
-export const withSafeImage = (product: Product, defaultImage = '/images/default-product.jpg'): ProductWithSafeImage => ({
-  ...product,
-  image: product.image || defaultImage,
-});
+/* ---------------------------------------------
+ * Helper function to ensure a safe image exists
+ * ------------------------------------------- */
+export const withSafeImage = (
+  product: Product,
+  defaultImage = '/images/default-product.jpg'
+): ProductWithSafeImage => {
+  return {
+    ...product,
+    images:
+      product.images && product.images.length > 0
+        ? (product.images as [string, ...string[]])
+        : [defaultImage],
+  };
+};
