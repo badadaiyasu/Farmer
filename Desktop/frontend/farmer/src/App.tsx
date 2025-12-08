@@ -1,4 +1,4 @@
-// src/App.tsx - FIXED
+// src/App.tsx
 import { Toaster } from "./components/ui/toaster";
 import { Toaster as Sonner } from "./components/ui/sonner";
 import { TooltipProvider } from "./components/ui/tooltip";
@@ -8,15 +8,14 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
-// Farmer Pages - CHANGE TO DEFAULT IMPORT
+// Farmer Pages
 import FarmerDashboard from "./pages/farmer/Dashboard";
 
-// Buyer Pages - CHANGE TO DEFAULT IMPORT
+// Buyer Pages
 import BuyerDashboard from "./pages/buyer/Dashboard";
 
-// Optional: Protected Route Wrapper (uncomment when auth is ready)
-// import { ProtectedRoute } from "@/components/ProtectedRoute";
-// import { useAuthStore } from "@/hooks/use-auth-store";
+// ✅ Auth Pages (ADD THIS)
+import RegisterPage from "./pages/auth/RegisterPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,10 +28,6 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  // const { user, isLoading } = useAuthStore();
-
-  // if (isLoading) return <div className="flex items-center justify-center h-screen">Loading...</div>;
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -44,27 +39,22 @@ const App = () => {
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
 
+            {/* ✅ Auth Routes */}
+            <Route path="/auth/register" element={<RegisterPage />} />
+
             {/* Farmer Routes */}
             <Route
               path="/farmer/dashboard"
-              element={
-                // <ProtectedRoute requireRole="farmer">
-                <FarmerDashboard />
-                // </ProtectedRoute>
-              }
+              element={<FarmerDashboard />}
             />
 
             {/* Buyer Routes */}
             <Route
               path="/buyer/dashboard"
-              element={
-                // <ProtectedRoute requireRole="buyer">
-                <BuyerDashboard />
-                // </ProtectedRoute>
-              }
+              element={<BuyerDashboard />}
             />
 
-            {/* Optional: Redirect old paths */}
+            {/* Redirect old paths */}
             <Route path="/dashboard" element={<Navigate to="/" replace />} />
 
             {/* 404 – Must be last */}
