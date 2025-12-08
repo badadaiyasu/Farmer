@@ -10,11 +10,13 @@ import NotFound from "./pages/NotFound";
 
 // Farmer Pages
 import FarmerDashboard from "./pages/farmer/Dashboard";
+import FarmerOrdersPage from "./pages/farmer/Orders";
 
 // Buyer Pages
 import BuyerDashboard from "./pages/buyer/Dashboard";
+import BuyerOrdersPage from "./pages/buyer/Orders";
 
-// ✅ Auth Pages (ADD THIS)
+// Auth Pages
 import RegisterPage from "./pages/auth/RegisterPage";
 
 const queryClient = new QueryClient({
@@ -39,20 +41,16 @@ const App = () => {
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
 
-            {/* ✅ Auth Routes */}
+            {/* Auth Routes */}
             <Route path="/auth/register" element={<RegisterPage />} />
 
             {/* Farmer Routes */}
-            <Route
-              path="/farmer/dashboard"
-              element={<FarmerDashboard />}
-            />
+            <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
+            <Route path="/farmer/orders" element={<FarmerOrdersPage />} />
 
             {/* Buyer Routes */}
-            <Route
-              path="/buyer/dashboard"
-              element={<BuyerDashboard />}
-            />
+            <Route path="/buyer/dashboard" element={<BuyerDashboard />} />
+            <Route path="/buyer/orders" element={<BuyerOrdersPage />} />
 
             {/* Redirect old paths */}
             <Route path="/dashboard" element={<Navigate to="/" replace />} />
