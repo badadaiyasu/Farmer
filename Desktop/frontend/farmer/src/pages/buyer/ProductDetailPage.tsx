@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ContactFarmerButton } from '../../components/buyer/ContactFarmerButton';
 
 // Define the function here instead of importing it
 const fetchProductById = async (id: string) => {
@@ -26,8 +27,20 @@ const fetchProductById = async (id: string) => {
 //   await new Promise(resolve => setTimeout(resolve, 500));
 //   
 //   const mockProducts = {
-//     "1": { id: "1", name: "Organic Tomatoes", price: 3.99, /* ... */ },
-//     "2": { id: "2", name: "Fresh Strawberries", price: 6.99, /* ... */ },
+//     "1": { 
+//       id: "1", 
+//       name: "Organic Tomatoes", 
+//       price: 3.99, 
+//       farmer: { phone: "+1234567890" }
+//       /* ... */ 
+//     },
+//     "2": { 
+//       id: "2", 
+//       name: "Fresh Strawberries", 
+//       price: 6.99,
+//       farmer: { phone: "+1234567891" }
+//       /* ... */ 
+//     },
 //   };
 //   
 //   const product = mockProducts[id as keyof typeof mockProducts];
@@ -81,6 +94,14 @@ export default function ProductDetailPage() {
         </Button>
 
         <ProductDetailCard product={product} />
+        
+        {/* Contact Farmer Section */}
+        <div className="mt-6 border-t pt-6">
+          <h3 className="text-lg font-semibold mb-3">
+            Contact Farmer
+          </h3>
+          <ContactFarmerButton phone={product.farmer?.phone} />
+        </div>
       </div>
     </div>
   );
