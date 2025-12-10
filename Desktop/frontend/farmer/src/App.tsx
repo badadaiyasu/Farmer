@@ -1,14 +1,13 @@
 // src/App.tsx
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 import { TooltipProvider } from "./components/ui/tooltip";
 import { Toaster } from "./components/ui/toaster";
 import { Toaster as Sonner } from "./components/ui/sonner";
-
-// Remove this line — not needed with Zustand
-// import { AuthProvider, useAuth } from "./hooks/useAuth";
-import { useAuth } from "./hooks/useAuth"; // Only import the hook
+import { useAuth } from "./hooks/useAuth";
 
 // Pages
 import Index from "./pages/Index";
@@ -33,8 +32,8 @@ const ProtectedRoute = ({
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-primary"></div>
       </div>
     );
   }
@@ -61,46 +60,48 @@ const queryClient = new QueryClient({
   },
 });
 
-// App
+// Main App Component
 const App = () => {
+  const { i18n } = useTranslation(); // t is used in future for meta titles if needed
+
+  useEffect(() => {
+    const currentLang = i18n.language || "en";
+
+    // Sync HTML lang and direction
+    document.documentElement.lang = currentLang;
+    document.documentElement.dir = i18n.dir?.(currentLang) ?? "ltr";
+
+    // Apply perfect font for each language
+    const fontFamily =
+      currentLang === "am"
+        ? '"Noto Sans Ethiopic", "Abyssinica SIL", "Nyala", sans-serif'
+        : currentLang === "om"
+        ? '"Noto Sans", system-ui, sans-serif'
+        : '"Inter", system-ui, sans-serif';
+
+    document.documentElement.style.fontFamily = fontFamily;
+    document.documentElement.style.lineHeight = currentLang === "am" ? "1.7" : "1.5";
+  }, [i18n, i18n.language]);
+
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Removed AuthProvider — not needed with Zustand */}
       <TooltipProvider>
         <Toaster />
-        <Sonner />
+        <Sonner position="top-center" richColors />
 
         <BrowserRouter>
-          <div className="min-h-screen bg-background">
+          <div className="min-h-screen bg-background text-foreground antialiased">
             <main>
               <Routes>
+                {/* Public */}
                 <Route path="/" element={<Index />} />
+                <Route path="/product/:id" element={<ProductDetailPage />} />
 
                 {/* Auth */}
                 <Route path="/auth/login" element={<SignInPage />} />
                 <Route path="/auth/register" element={<RegisterPage />} />
 
-                <Route path="/product/:id" element={<ProductDetailPage />} />
-
-                {/* Farmer Protected Routes */}
-                <Route
-                  path="/farmer/dashboard"
-                  element={
-                    <ProtectedRoute allowedRoles={["farmer"]}>
-                      <FarmerDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/farmer/orders"
-                  element={
-                    <ProtectedRoute allowedRoles={["farmer"]}>
-                      <FarmerOrdersPage />
-                    </ProtectedRoute>
-                  }
-                />
-
-                {/* Buyer Protected Routes */}
+                {/* Buyer */}
                 <Route
                   path="/buyer/dashboard"
                   element={
@@ -118,6 +119,25 @@ const App = () => {
                   }
                 />
 
+                {/* Farmer */}
+                <Route
+                  path="/farmer/dashboard"
+                  element={
+                    <ProtectedRoute allowedRoles={["farmer"]}>
+                      <FarmerDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/farmer/orders"
+                  element={
+                    <ProtectedRoute allowedRoles={["farmer"]}>
+                      <FarmerOrdersPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Fallback */}
                 <Route path="/dashboard" element={<Navigate to="/" replace />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
