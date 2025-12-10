@@ -1,20 +1,10 @@
 // src/components/buyer/ProductFeed.tsx
 import ProductCard from './ProductCard';
 import { Skeleton } from '../../components/ui/skeleton';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  quantity: string;
-  image: string;
-  category: string;
-  language: 'am' | 'or' | 'en';
-  farmer: { name: string; location: string };
-}
+import type { ProductCard as ProductCardType } from '../../types/product';
 
 interface ProductFeedProps {
-  products: Product[];
+  products: ProductCardType[];
   isLoading: boolean;
 }
 

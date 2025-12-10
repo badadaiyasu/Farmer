@@ -2,71 +2,51 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-// Hooks
+// Hooks - Using relative path until alias is fixed
 import { useProducts } from '../../hooks/use-products-query';
 
-// Components (buyer-specific)
+// Components - Using relative paths
 import ProductFeed from '../../components/buyer/ProductFeed';
 import SearchBar from '../../components/buyer/SearchBar';
-import ProductFilters from '../../components/buyer/ProductFilters';
+import { ProductFilterSidebar } from '../../components/buyer/ProductFilterSidebar';
+import { ProductFilterSheet } from '../../components/buyer/ProductFilterSheet';
 
-// Types
-// Types
-import type { Product as ApiProduct } from '../../types/product';
-
-// Define filter types
-type FilterLanguage = 'am' | 'or' | 'en' | undefined;
-type FilterValue = FilterLanguage | string | number | undefined;
-
-interface Filters {
-  language?: FilterLanguage;
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-}
-
-// Helper function to transform products for ProductFeed
-const transformProductsForFeed = (products: ApiProduct[]) => {
-  return products.map(product => ({
-    id: product.id,
-    name: product.name,
-    description: product.description,
-    price: product.price,
-    quantity: product.quantity,
-    image: product.image || '/images/default-product.jpg', // Handle null with default
-    category: product.category,
-    language: product.language,
-    created_at: product.created_at,
-    farmer: product.farmer,
-    views: product.views,
-  }));
-};
+// Types - Using relative path
+import type { ProductFilters, ApiProduct, Product } from '../../types/product';
+import { apiProductToProductCard } from '../../types/product';
 
 export default function BuyerDashboard() {
   const { t } = useTranslation();
+  const [filters, setFilters] = useState<ProductFilters>({});
 
-  const [search, setSearch] = useState<string>('');
-  const [filters, setFilters] = useState<Filters>({ language: undefined });
+  const { data, isLoading } = useProducts(filters);
 
-  const { data: products = [], isLoading } = useProducts({
-    search,
-    ...filters,
-  });
-
-  const handleFilterChange = (key: keyof Filters, value: FilterValue) => {
-    setFilters((prev) => ({
+  const handleSearch = (search: string) => {
+    setFilters((prev: ProductFilters) => ({
       ...prev,
-      [key]: value === 'all' || value === '' ? undefined : value,
+      search: search.trim() || undefined,
     }));
   };
 
-  // Transform products for ProductFeed
-  const feedProducts = transformProductsForFeed(products);
+  const handleFilterChange = (newFilters: Partial<ProductFilters>) => {
+    setFilters((prev: ProductFilters) => ({ ...prev, ...newFilters }));
+  };
+
+  const handleReset = () => {
+    setFilters({});
+  };
+
+  const products = data || [];
+  const feedProducts: Product[] = products.map((product: unknown) => {
+    // Use the helper function from your types file, then normalize quantity to string expected by Product
+    const card = apiProductToProductCard(product as ApiProduct);
+    return { ...card, quantity: String(card.quantity) } as unknown as Product;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
-        {/* Hero Greeting */}
+        {/* Header */}
         <header className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             {t('welcomeBuyer', 'Welcome, Buyer!')}
@@ -80,22 +60,32 @@ export default function BuyerDashboard() {
         </header>
 
         {/* Search Bar */}
-        <div className="mb-10 flex justify-center">
-          <SearchBar value={search} onChange={setSearch} />
+        <div className="mb-8">
+          <SearchBar onSearch={handleSearch} />
         </div>
 
-        {/* Filters + Product Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Filters Sidebar */}
-          <aside className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border p-6 sticky top-6">
-              <h2 className="font-semibold text-lg mb-4">{t('filters', 'Filters')}</h2>
-              <ProductFilters filters={filters} onFilterChange={handleFilterChange} />
-            </div>
+        {/* Mobile Filter Button + Desktop Sidebar */}
+        <div className="flex flex-col lg:flex-row gap-4 items-start">
+          {/* Mobile Filter Sheet */}
+          <div className="block lg:hidden w-full">
+            <ProductFilterSheet
+              filters={filters}
+              onChange={handleFilterChange}
+              onReset={handleReset}
+            />
+          </div>
+
+          {/* Desktop Sidebar */}
+          <aside className="hidden lg:block w-80 shrink-0">
+            <ProductFilterSidebar
+              filters={filters}
+              onChange={handleFilterChange}
+              onReset={handleReset}
+            />
           </aside>
 
-          {/* Product Feed */}
-          <main className="lg:col-span-3">
+          {/* Product Grid */}
+          <main className="flex-1 w-full">
             <ProductFeed products={feedProducts} isLoading={isLoading} />
           </main>
         </div>

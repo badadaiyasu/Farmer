@@ -3,23 +3,15 @@ import { Card, CardContent, CardFooter, CardHeader } from '../../components/ui/c
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import { useTranslation } from 'react-i18next';
+import type { ProductCard as ProductCardType, ProductLanguage } from '../../types/product';
 
 interface ProductCardProps {
-  product: {
-    id: number;
-    name: string;
-    price: number;
-    quantity: string;
-    image: string;
-    category: string;
-    language: 'am' | 'or' | 'en';
-    farmer: { name: string; location: string };
-  };
+  product: ProductCardType;
 }
 
-const langLabels: Record<string, string> = {
+const langLabels: Record<ProductLanguage, string> = {
   am: 'አማርኛ',
-  or: 'Afaan Oromoo',
+  om: 'Afaan Oromoo',
   en: 'English',
 };
 

@@ -1,6 +1,9 @@
 /* Tailwind CSS v4 Configuration */
 @import "tailwindcss";
 
+/* Import Noto Sans Ethiopic font */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;700&display=swap');
+
 /* Theme configuration using CSS custom properties */
 :root {
   /* Base colors */
@@ -42,6 +45,10 @@
   
   /* Border radius */
   --radius: 0.75rem;
+  
+  /* Font family */
+  --font-sans: 'Noto Sans Ethiopic', ui-sans-serif, system-ui, sans-serif;
+  --font-ethiopic: 'Noto Sans Ethiopic', sans-serif;
   
   /* Gradients */
   --gradient-hero: linear-gradient(135deg, hsl(145 45% 38%) 0%, hsl(145 35% 25%) 100%);
@@ -105,6 +112,22 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-feature-settings: "rlig" 1, "calt" 1;
+  font-family: var(--font-sans);
+}
+
+/* Custom font classes */
+.font-ethiopic {
+  font-family: var(--font-ethiopic);
+}
+
+.font-ethiopic-bold {
+  font-family: var(--font-ethiopic);
+  font-weight: 700;
+}
+
+.font-ethiopic-regular {
+  font-family: var(--font-ethiopic);
+  font-weight: 400;
 }
 
 /* Custom animations */
@@ -126,6 +149,15 @@ body {
   }
   50% {
     opacity: 0.7;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 
@@ -172,6 +204,10 @@ body {
   animation: pulse-subtle 2s ease-in-out infinite;
 }
 
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
 /* Custom border widths */
 .border-3 {
   border-width: 3px;
@@ -209,4 +245,29 @@ body {
 ::selection {
   background-color: var(--primary);
   color: var(--primary-foreground);
+}
+
+/* Typography enhancements for Ethiopic script */
+.ethiopic-text {
+  font-family: var(--font-ethiopic);
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+/* RTL/LTR text direction utilities */
+.text-direction-rtl {
+  direction: rtl;
+}
+
+.text-direction-ltr {
+  direction: ltr;
+}
+
+/* Hyphenation control for better text wrapping */
+.hyphens-auto {
+  hyphens: auto;
+}
+
+.hyphens-none {
+  hyphens: none;
 }
